@@ -1,0 +1,96 @@
+import org.apache.tools.ant.filters.*
+
+group 'com.lexxstudy'
+version '1.0-SNAPSHOT'
+
+
+apply plugin: 'groovy'  // add clean, build, jar ... tasks
+
+/*
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.3.11'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+*/
+
+project.ext {
+    toFolder = 'build/toFolder'
+    fromFolder = "src/main/resources"
+    variable = 1234
+    variable2 = 'eadxed23sq34de2'
+}
+
+/*task pTask {
+    println new Date().format("yyMMMdd HH:mm:ss") + ': pTask'
+}*/
+/*
+task simpleTask dependsOn(parentTask) {
+    println 'variable = ' + project.variable
+}*/
+
+task xzipTask(type: Zip) {                    // task that creates a zip
+
+    into(toFolder)                          // copy in folder
+
+    from file(fromFolder + '/res1')         // copy from
+    include('*1*.txt')                      // include with filter
+
+    from file(fromFolder + '/res2')
+    include('file21.txt')                   // include and exclude specific files
+    exclude('file22.txt')
+
+    expand(variable: variable)               // apply replace macro
+
+}
+
+task xcopyTask(type: Copy) {                    // task that creates a zip
+
+    into toFolder
+
+
+    from (fromFolder + '/res1')         {
+        include('file11.txt')
+    }
+
+    from (fromFolder + '/res2') {
+        include('file21.txt')                   // include and exclude specific files
+        exclude('file22.txt')
+    }
+
+
+
+    into('/res3') {
+        from (fromFolder + '/res3')
+        include '**'
+        filter(org.apache.tools.ant.filters.ReplaceTokens, tokens: [VERSION: '2.3.2'])
+
+    }
+
+    expand('variable': variable, 'datax' : 15875215)               // apply replace macro
+
+
+}
+
+
+
+task('xfilterCopy', type: Copy) {
+    from fromFolder + '/res3'
+    into toFolder
+    include '**/*.txt'
+    //filter { line -> println(line) }
+    filter(org.apache.tools.ant.filters.ReplaceTokens, tokens: [VERSION: '2.3.2'])
+
+
+}
+
+/*
+into('/') {
+    from "$currentPatchResourcesDir"
+    include 'database/**'
+    filter(org.apache.tools.ant.filters.ReplaceTokens, tokens: [BUILD_NUMBER: buildNumber])
+}
+*/
