@@ -24,9 +24,9 @@ project.ext {
     variable2 = 'eadxed23sq34de2'
 }
 
-/*task pTask {
+task pTask {
     println new Date().format("yyMMMdd HH:mm:ss") + ': pTask'
-}*/
+}
 /*
 task simpleTask dependsOn(parentTask) {
     println 'variable = ' + project.variable
